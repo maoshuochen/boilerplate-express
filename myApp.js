@@ -11,8 +11,8 @@ console.log("Hello World!");
 // });
 
 //2-7 实现一个根级的请求记录中间件
-app.use("/", function (req, res, next) {
-    console.log(req.method, " ", req.path, " - ", req.ip);
+app.use(function (req, res, next) {
+    console.log(req.method, req.path, "-", req.ip);
     next();
 });
 
@@ -33,5 +33,18 @@ app.get("/json", function (req, res) {
         res.json({ message: "Hello json" });
     }
 });
+
+//2-8 通过链式调用中间件来创建时间服务
+app.get(
+    "/now",
+    function (req, res, next) {
+        req.time = new Date().toString();
+        console.log(req.time);
+        next();
+    },
+    function (req, res) {
+        res.send({ time: req.time });
+    }
+);
 
 module.exports = app;
