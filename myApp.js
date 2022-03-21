@@ -58,9 +58,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //2-10 从客户端获取输入的查询参数
-app.route("/name").get(function (req, res) {
-    console.log(`${req.query.first} ${req.query.last}`);
-    res.json({ name: `${req.query.first} ${req.query.last}` });
-});
+//2-12 从 POST 请求中获取数据
+app.route("/name")
+    .get(function (req, res) {
+        res.json({ name: `${req.query.first} ${req.query.last}` });
+    })
+    .post(function (req, res) {
+        // body-parser将结果解析后放在req.body中
+        res.json({ name: `${req.body.first} ${req.body.last}` });
+    });
 
 module.exports = app;
